@@ -1,29 +1,30 @@
 @import url("https://fonts.googleapis.com/css2?family=Goudy+Bookletter+1911&display=swap");
 
 :root:not([data-theme="light"]) {
-  --primary: #d81b60;
+  --primary: #c7b198;
   --primary-hover: #c2185b;
   --primary-focus: rgba(216, 27, 96, 0.125);
-  --primary-inverse: #fff;
-
+  --primary-inverse: #000;
   --background-color: #000;
   --color: hsl(205deg, 16%, 77%);
   --card-background-color: #000;
+  --font-family: "Goudy Bookletter 1911", serif;
 }
 
 $color: #c7b198;
 
 html {
   background: black;
+  font-family: "Goudy Bookletter 1911";
 }
 body {
-  padding: 50px;
+  padding: 0 50px 50px;
 }
 
 html,
 body {
   width: 100%;
-  height: 100%;
+  height: auto;
 }
 
 body > header,
@@ -35,7 +36,6 @@ body > footer {
 main > article {
   margin: 0;
   padding: 0;
-  min-height: 100vh;
 
   & > section {
     margin-bottom: 0;
@@ -44,12 +44,31 @@ main > article {
 
 a,
 h1 {
+  color: $color;
+  font-size: 22px;
   transition: color 0.3s ease-in-out;
+  --typography-spacing-vertical: 1rem;
 }
 
 a:hover,
 h1:hover {
   color: $color;
+}
+
+nav {
+  align-items: center;
+  a,
+  h1 {
+    margin: 0;
+    padding: var(--nav-link-spacing-vertical) var(--nav-link-spacing-horizontal);
+    line-height: 100%;
+  }
+  h1 {
+    padding-left: 0;
+  }
+  a {
+    padding-right: 0;
+  }
 }
 
 body {
@@ -62,8 +81,6 @@ body {
   gap: 0; // remove gaps between grid items
   margin: 0;
   padding: 0;
-  height: 100%;
-  outline: solid 1px $color;
 
   .grid-item {
     width: 50%; // default width and height
@@ -71,6 +88,12 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    cursor: pointer;
+    z-index: 1;
+
+    &.is-dragging {
+      z-index: 9999;
+    }
 
     &--width1 {
       width: 25%;
@@ -83,10 +106,11 @@ body {
     }
 
     &--height1 {
-      height: 25%;
+      height: 25vh;
+      aspect-ratio: 1 / 1;
     } // override default height
     &--height2 {
-      height: 50%;
+      height: 50vh;
     }
   }
 }

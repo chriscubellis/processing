@@ -1,12 +1,31 @@
 import p5 from "p5";
-let p5;
+import Draggabilly from "draggabilly";
+
+var draggableElems = document.querySelectorAll(".grid-item");
+var draggies = [];
+
+for (var i = 0; i < draggableElems.length; i++) {
+  var draggableElem = draggableElems[i];
+  var draggie = new Draggabilly(draggableElem, {
+    // options...
+  });
+  draggies.push(draggie);
+}
+
+let counter = 9;
+
+draggableElems.forEach((item) => {
+  item.addEventListener("click", () => {
+    // Increment the counter variable
+    counter++;
+
+    // Set the z-index of the clicked grid item to the current value of the counter variable
+    item.style.zIndex = counter;
+  });
+});
 
 import sketch1 from "./sketches/sketch-1.js";
 import sketch2 from "./sketches/sketch-2.js";
 import sketch3 from "./sketches/sketch-3.js";
 import sketch4 from "./sketches/sketch-4.js";
-
-new p5(sketch1, "sketch1");
-new p5(sketch2, "sketch2");
-new p5(sketch3, "sketch3");
-new p5(sketch4, "sketch4");
+import sketch5 from "./sketches/sketch-5.js";

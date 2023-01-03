@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@picocss/pico": "^1.5.6",
+    "draggabilly": "^3.0.0",
     "p5": "^1.5.0",
     "parcel": "^2.8.2",
     "pico": "^0.1.17"

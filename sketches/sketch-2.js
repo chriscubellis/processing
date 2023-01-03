@@ -1,28 +1,40 @@
 // sketch-2.js
+import p5 from "p5";
 
-function sketch2(p) {
-  const container = document.getElementById("sketch2");
+const container = document.getElementById("sketch2");
 
-  var w = container.clientWidth;
-  var h = container.clientHeight;
+var w = container.clientWidth;
+var h = container.clientHeight;
 
-  var x = 100.0;
-  var y = 100;
-  var speed = 2.5;
+let angle = 0;
+let points = 3;
+let speed = 0.01;
 
+let sketch2 = function (p) {
   p.setup = function () {
-    p.createCanvas(w, h);
+    p.createCanvas(w, h, p.WEBGL);
+    p.setAttributes("alpha", true);
   };
 
   p.draw = function () {
-    p.background(100, 0);
-    p.fill("#c7b198");
-    x += speed;
-    if (x > p.width) {
-      x = 0;
-    }
-    p.ellipse(x, y, 50, 50);
+    p.background(0, 0, 0, 0);
+    p.stroke("#c7b198");
+    p.strokeWeight(2);
+    p.noFill();
+
+    p.push();
+    // rotate the shape around the y-axis
+    p.rotateY(angle);
+
+    // draw the shape
+    p.box(100, 100, 100, points, points);
+
+    p.pop();
+    // increment the angle for the next frame
+    angle += speed;
   };
-}
+};
+
+let myp5 = new p5(sketch2, "sketch2");
 
 export default sketch2;

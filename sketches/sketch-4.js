@@ -1,17 +1,19 @@
 // sketch-4.js
 
-function sketch4(p) {
-  const container = document.getElementById("sketch4");
+import p5 from "p5";
 
-  var w = container.clientWidth;
-  var h = container.clientHeight;
+const container = document.getElementById("sketch4");
+var w = container.clientWidth;
+var h = container.clientHeight;
 
-  let color;
-  let speed;
-  let seed;
+let x, y, width, height;
 
+let sketch4 = function (p) {
   p.setup = function () {
     p.createCanvas(w, h);
+
+    var x = w / 2;
+    var y = h / 2;
 
     color = 0;
     speed = 0.01;
@@ -19,19 +21,16 @@ function sketch4(p) {
   };
 
   p.draw = function () {
-    p.background(0, 0); // set background color to light gray
-
-    color += speed;
-    if (color > 1) {
-      color = 0;
+    var x = p.random(p.width);
+    var y = p.random(p.height);
+    var r = 25;
+    var hover = p.dist(p.mouseX, p.mouseY, x, y) < r;
+    if (hover) {
+      p.fill(p.color("black"));
+    } else {
+      p.fill(p.color("#c7b198"));
     }
-
-    p.fill(p.color("#c7b198")); // interpolate between red and blue
-    p.randomSeed(seed);
-    for (let i = 0; i < 10; i++) {
-      p.ellipse(p.random(p.width), p.random(p.height), 50, 50); // draw random ellipses
-    }
+    p.ellipse(x, y, 50, 50);
   };
-}
-
-export default sketch4;
+};
+let myp5 = new p5(sketch4, "sketch4");
