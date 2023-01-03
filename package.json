@@ -1,0 +1,21 @@
+{
+  "name": "processing",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "chriscubellis <chrs.cblls@gmail.com>",
+  "license": "MIT",
+  "source": "index.html",
+  "scripts": {
+    "start": "parcel",
+    "build": "parcel build"
+  },
+  "dependencies": {
+    "@picocss/pico": "^1.5.6",
+    "p5": "^1.5.0",
+    "parcel": "^2.8.2",
+    "pico": "^0.1.17"
+  },
+  "devDependencies": {
+    "@parcel/transformer-sass": "2.8.2"
+  }
+}
