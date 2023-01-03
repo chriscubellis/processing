@@ -1,7 +1,6 @@
 {
   "name": "processing",
   "version": "1.0.0",
-  "main": "index.js",
   "author": "chriscubellis <chrs.cblls@gmail.com>",
   "license": "MIT",
   "source": "index.html",
