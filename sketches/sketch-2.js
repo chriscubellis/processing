@@ -12,6 +12,31 @@ let angle = 0;
 let points = 3;
 let speed = 0.01;
 
+let currentShape = "box";
+
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function loopShapes() {
+  while (true) {
+    switch (currentShape) {
+      case "box":
+        currentShape = "sphere";
+        break;
+      case "sphere":
+        currentShape = "torus";
+        break;
+      case "torus":
+        currentShape = "box";
+        break;
+    }
+    await delay(2500);
+  }
+}
+
+loopShapes();
+
 let sketch2 = function (p) {
   p.setup = function () {
     p.createCanvas(w, h, p.WEBGL);
@@ -29,7 +54,17 @@ let sketch2 = function (p) {
     p.rotateY(angle);
 
     // draw the shape
-    p.box(100, 100, 100, points, points);
+    switch (currentShape) {
+      case "box":
+        p.box(h / 3, h / 3, 100, points, points);
+        break;
+      case "sphere":
+        p.sphere(50, 12, 12);
+        break;
+      case "torus":
+        p.torus(h / 5, h / 7, 8, 4);
+        break;
+    }
 
     p.pop();
     // increment the angle for the next frame

@@ -69,8 +69,22 @@ h1:hover {
   color: var(--color);
 }
 
+nav > a#comic {
+  padding: 10px;
+  text-align: center;
+  margin-left: -5px;
+  width: auto;
+}
+
 nav {
   align-items: center;
+  position: relative;
+  z-index: 99999;
+  h1,
+  a,
+  ul {
+    width: 100%;
+  }
   a,
   h1 {
     margin: 0;
@@ -79,9 +93,20 @@ nav {
   }
   h1 {
     padding-left: 0;
-  }
-  a {
     padding-right: 0;
+  }
+
+  ul {
+    justify-content: right;
+    &:last-of-type {
+      margin-right: 0;
+      li {
+        padding-right: 0;
+        a {
+          padding-right: 0;
+        }
+      }
+    }
   }
 }
 
@@ -101,9 +126,11 @@ nav {
     box-sizing: border-box;
     cursor: pointer;
     z-index: 1;
+    //transition: transform 1s ease-in-out;
 
     &.is-dragging {
       z-index: 9999;
+      transition: none;
     }
 
     &--width1 {

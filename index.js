@@ -1,6 +1,8 @@
 import p5 from "p5";
 import Draggabilly from "draggabilly";
 
+import "./js/comic-layout.js";
+
 // defaults
 
 export const primary = getComputedStyle(
@@ -36,3 +38,5 @@ import sketch2 from "./sketches/sketch-2.js";
 import sketch3 from "./sketches/sketch-3.js";
 import sketch4 from "./sketches/sketch-4.js";
 import sketch5 from "./sketches/sketch-5.js";
+import sketch6 from "./sketches/sketch-6.js";
+import sketch7 from "./sketches/sketch-7.js";

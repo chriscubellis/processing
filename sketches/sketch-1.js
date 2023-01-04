@@ -12,7 +12,7 @@ let speed;
 let seed;
 let radius = 4;
 
-const GRAVITY = 0.00001;
+const GRAVITY = 0.25;
 const DAMPING = 0.9999;
 const REMOVE_AFTER = 10000; // number of milliseconds to keep a circle before removing it
 
@@ -27,7 +27,7 @@ let sketch1 = function (p) {
     p.textSize(20); // set the text size to 20 pixels
 
     let x = p.random(w);
-    let y = p.random(h);
+    let y = 1;
     let r = p.random(5, 25);
     let vx = p.random(-5, 5);
     let vy = p.random(-5, 5);
