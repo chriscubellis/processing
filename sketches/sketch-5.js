@@ -14,8 +14,6 @@ let sketch5 = function (p) {
 
     x = w / 2;
     y = h / 2;
-
-    seed = p.random(10);
   };
 
   p.draw = function () {

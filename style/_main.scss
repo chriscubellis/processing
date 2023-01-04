@@ -6,7 +6,7 @@
   --primary-focus: rgba(216, 27, 96, 0.125);
   --primary-inverse: #000;
   --background-color: #000;
-  --color: hsl(205deg, 16%, 77%);
+  --color: var(--primary);
   --card-background-color: #000;
   --font-family: "Goudy Bookletter 1911", serif;
   --nav-element-spacing-vertical: 1rem;
@@ -14,10 +14,8 @@
   --spacing: 4rem;
 }
 
-$color: #c7b198;
-
 html {
-  background: black;
+  background: var(--background-color);
   font-family: "Goudy Bookletter 1911";
 }
 
@@ -26,7 +24,7 @@ body {
   width: 100%;
   height: auto;
   padding: 0;
-  background: black;
+  color: var(--color);
 }
 
 main > article {
@@ -43,7 +41,7 @@ body > main {
 }
 
 .container-fluid {
-  padding-bottom: var(--spacing);
+  padding-bottom: calc(var(--spacing) / 2);
   @media (max-width: 420px) {
     --spacing: 1.5rem;
     --block-spacing-vertical: 1.5rem;
@@ -52,15 +50,23 @@ body > main {
 
 a,
 h1 {
-  color: $color;
   font-size: 22px;
   transition: color 0.3s ease-in-out;
   --typography-spacing-vertical: 1rem;
 }
 
+h1 {
+  color: var(--primary);
+  --color: var(--primary);
+}
+
+a {
+  color: var(--color);
+}
+
 a:hover,
 h1:hover {
-  color: $color;
+  color: var(--color);
 }
 
 nav {
@@ -89,7 +95,7 @@ nav {
 
   .grid-item {
     width: 50%; // default width and height
-    outline: solid 1px $color;
+    outline: solid 1px var(--primary);
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -133,6 +139,23 @@ nav {
       &:nth-child(14) {
         width: 100%;
       }
+    }
+  }
+}
+
+footer {
+  padding-top: calc(var(--spacing) / 2);
+  padding-bottom: 0;
+  ul {
+    width: 100%;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+
+    li {
+      width: 100%;
+      list-style-type: none;
+      margin: 0;
     }
   }
 }
