@@ -10,7 +10,7 @@ let speed;
 let seed;
 
 const GRAVITY = 0;
-const DAMPING = 0.998;
+const DAMPING = 0.9999;
 
 let circles = [];
 
@@ -18,7 +18,7 @@ let sketch1 = function (p) {
   p.setup = function () {
     p.createCanvas(w, h);
 
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 1; i++) {
       let x = p.random(w);
       let y = p.random(h);
       let r = p.random(5, 25);
@@ -30,7 +30,10 @@ let sketch1 = function (p) {
 
   p.draw = function () {
     p.background(0, 0);
-
+    // Remove excess circles from the array
+    while (circles.length > 500) {
+      circles.shift();
+    }
     for (let circle of circles) {
       circle.applyForce(0, GRAVITY);
       circle.update();

@@ -9,6 +9,9 @@
   --color: hsl(205deg, 16%, 77%);
   --card-background-color: #000;
   --font-family: "Goudy Bookletter 1911", serif;
+  --nav-element-spacing-vertical: 1rem;
+  --block-spacing-vertical: 1rem;
+  --spacing: 4rem;
 }
 
 $color: #c7b198;
@@ -17,20 +20,13 @@ html {
   background: black;
   font-family: "Goudy Bookletter 1911";
 }
-body {
-  padding: 0 50px 50px;
-}
 
 html,
 body {
   width: 100%;
   height: auto;
-}
-
-body > header,
-body > main,
-body > footer {
   padding: 0;
+  background: black;
 }
 
 main > article {
@@ -39,6 +35,18 @@ main > article {
 
   & > section {
     margin-bottom: 0;
+  }
+}
+
+body > main {
+  padding-top: 0;
+}
+
+.container-fluid {
+  padding-bottom: var(--spacing);
+  @media (max-width: 420px) {
+    --spacing: 1.5rem;
+    --block-spacing-vertical: 1.5rem;
   }
 }
 
@@ -71,9 +79,6 @@ nav {
   }
 }
 
-body {
-}
-
 #sketches {
   display: flex;
   flex-wrap: wrap;
@@ -97,12 +102,18 @@ body {
 
     &--width1 {
       width: 25%;
+      @media (max-width: 420px) {
+        width: 50%;
+      }
     } // override default width
     &--width2 {
       width: 50%;
     }
     &--width3 {
       width: 75%;
+      @media (max-width: 420px) {
+        width: 100%;
+      }
     }
 
     &--height1 {
@@ -111,6 +122,17 @@ body {
     } // override default height
     &--height2 {
       height: 50vh;
+      @media (max-width: 420px) {
+        height: 25vh;
+      }
+    }
+
+    @media (max-width: 420px) {
+      &:nth-child(3),
+      &:nth-child(7),
+      &:nth-child(14) {
+        width: 100%;
+      }
     }
   }
 }

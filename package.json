@@ -6,7 +6,8 @@
   "source": "index.html",
   "scripts": {
     "start": "parcel",
-    "build": "parcel build"
+    "build": "parcel build",
+    "run": "parcel index.html"
   },
   "dependencies": {
     "@picocss/pico": "^1.5.6",
