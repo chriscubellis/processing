@@ -1,6 +1,7 @@
 // sketch-4.js
 
 import p5 from "p5";
+import { primary } from "../index.js";
 
 const container = document.getElementById("sketch5");
 var w = container.clientWidth;
@@ -17,7 +18,7 @@ let sketch5 = function (p) {
   };
 
   p.draw = function () {
-    p.stroke("#c7b198");
+    p.stroke(primary);
     p.strokeWeight(2);
     p.point(x, y);
 

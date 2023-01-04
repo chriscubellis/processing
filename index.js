@@ -1,9 +1,16 @@
 import p5 from "p5";
 import Draggabilly from "draggabilly";
 
+// defaults
+
+export const primary = getComputedStyle(
+  document.documentElement
+).getPropertyValue("--primary");
+
+// draggy
+
 var draggableElems = document.querySelectorAll(".grid-item");
 var draggies = [];
-
 for (var i = 0; i < draggableElems.length; i++) {
   var draggableElem = draggableElems[i];
   var draggie = new Draggabilly(draggableElem, {
@@ -11,9 +18,7 @@ for (var i = 0; i < draggableElems.length; i++) {
   });
   draggies.push(draggie);
 }
-
 let counter = 9;
-
 draggableElems.forEach((item) => {
   item.addEventListener("click", () => {
     // Increment the counter variable
@@ -23,6 +28,8 @@ draggableElems.forEach((item) => {
     item.style.zIndex = counter;
   });
 });
+
+// sketches
 
 import sketch1 from "./sketches/sketch-1.js";
 import sketch2 from "./sketches/sketch-2.js";

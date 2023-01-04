@@ -31,6 +31,8 @@ const container = document.getElementById("sketch3");
 var w = container.clientWidth;
 var h = container.clientHeight;
 
+import { primary } from "../index.js";
+
 let sketch = function (p) {
   p.setup = function () {
     p.createCanvas(w, h);
@@ -42,14 +44,14 @@ let sketch = function (p) {
     if (grid[y][x] === 1) {
       p.fill(0, 0);
     } else {
-      p.fill("#c7b198");
+      p.fill(primary);
     }
     p.rect(x * (w / 25), y * (h / 25), w / 25, h / 25);
   }
 
   p.draw = function () {
     p.background(0, 0);
-    p.stroke("#c7b198");
+    p.stroke(primary);
 
     // Iterate over each cell of the grid and draw it
     for (let y = 0; y < grid.length; y++) {

@@ -5,35 +5,38 @@ const container = document.getElementById("sketch1");
 var w = container.clientWidth;
 var h = container.clientHeight;
 
+import { primary } from "../index.js";
+
 let color;
 let speed;
 let seed;
+let radius = 4;
 
-const GRAVITY = 0;
+const GRAVITY = 0.00001;
 const DAMPING = 0.9999;
+const REMOVE_AFTER = 10000; // number of milliseconds to keep a circle before removing it
 
 let circles = [];
 
 let sketch1 = function (p) {
   p.setup = function () {
     p.createCanvas(w, h);
-    p.fill("#c7b198");
-    for (let i = 0; i < 1; i++) {
-      let x = p.random(w);
-      let y = p.random(h);
-      let r = p.random(5, 25);
-      let vx = p.random(-5, 5);
-      let vy = p.random(-5, 5);
-      circles.push(new Circle(x, y, r, vx, vy));
-    }
+    p.fill(primary);
+
+    p.frameRate(60); // set the frame rate to 60 fps
+    p.textSize(20); // set the text size to 20 pixels
+
+    let x = p.random(w);
+    let y = p.random(h);
+    let r = p.random(5, 25);
+    let vx = p.random(-5, 5);
+    let vy = p.random(-5, 5);
+    circles.push(new Circle(x, y, r, vx, vy));
   };
 
   p.draw = function () {
     p.background(0, 0);
-    // Remove excess circles from the array
-    while (circles.length > 500) {
-      circles.shift();
-    }
+
     for (let circle of circles) {
       circle.applyForce(0, GRAVITY);
       circle.update();
@@ -68,21 +71,19 @@ let sketch1 = function (p) {
       if (this.y - this.r < 0 || this.y + this.r > h) {
         this.vy *= -1;
       }
-
-      for (let other of circles) {
-        if (other !== this) {
-          let d = p.dist(this.x, this.y, other.x, other.y);
-          if (d < this.r + other.r) {
-            this.vx *= -1;
-            this.vy *= -1;
-          }
-        }
-      }
     }
 
     display() {
-      p.ellipse(this.x, this.y, this.r * 2);
-      p.fill("#c7b198");
+      if (
+        this.x - this.r < 0 ||
+        this.x + this.r > w ||
+        this.y - this.r < 0 ||
+        this.y + this.r > h
+      ) {
+        return; // do not display circle if it is outside the canvas
+      }
+      p.ellipse(this.x, this.y, this.r * radius);
+      p.fill(primary);
     }
   }
 };

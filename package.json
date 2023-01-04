@@ -5,9 +5,8 @@
   "license": "MIT",
   "source": "index.html",
   "scripts": {
-    "start": "parcel",
-    "build": "parcel build",
-    "run": "parcel index.html"
+    "start": "parcel index.html",
+    "build": "parcel build"
   },
   "dependencies": {
     "@picocss/pico": "^1.5.6",

@@ -1,6 +1,8 @@
 // sketch-2.js
 import p5 from "p5";
 
+import { primary } from "../index.js";
+
 const container = document.getElementById("sketch2");
 
 var w = container.clientWidth;
@@ -18,7 +20,7 @@ let sketch2 = function (p) {
 
   p.draw = function () {
     p.background(0, 0, 0, 0);
-    p.stroke("#c7b198");
+    p.stroke(primary);
     p.strokeWeight(2);
     p.noFill();
 
