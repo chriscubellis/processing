@@ -11,7 +11,11 @@ comicLink.addEventListener("click", function () {
   } else {
     // reset the transform style property to its default value
     draggableElems.forEach(function (elem) {
+      elem.style.transition = "transform 1s";
       elem.style.transform = "";
+      elem.addEventListener("transitionend", function () {
+        elem.style.transition = "";
+      });
     });
   }
 });

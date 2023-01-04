@@ -151,12 +151,34 @@ nav {
 
     &--height1 {
       height: 25vh;
+      min-height: 500px;
       aspect-ratio: 1 / 1;
     } // override default height
     &--height2 {
       height: 50vh;
       @media (max-width: 420px) {
         height: 25vh;
+      }
+    }
+
+    &.empty {
+      &::after {
+        content: "sometime soon";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 14px;
+        opacity: 0;
+        transition: 2s ease-in-out;
+      }
+      &:hover {
+        &::after {
+          opacity: 1;
+        }
       }
     }
 
