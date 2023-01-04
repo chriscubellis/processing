@@ -74,6 +74,10 @@ nav > a#comic {
   text-align: center;
   margin-left: -5px;
   width: auto;
+  transition: 1s;
+  &:hover {
+    transform: rotate(360deg);
+  }
 }
 
 nav {
