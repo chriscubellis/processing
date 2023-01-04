@@ -17,7 +17,7 @@ let circles = [];
 let sketch1 = function (p) {
   p.setup = function () {
     p.createCanvas(w, h);
-
+    p.fill("#c7b198");
     for (let i = 0; i < 1; i++) {
       let x = p.random(w);
       let y = p.random(h);
