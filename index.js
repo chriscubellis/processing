@@ -41,3 +41,4 @@ import sketch5 from "./sketches/sketch-5.js";
 import sketch6 from "./sketches/sketch-6.js";
 import sketch7 from "./sketches/sketch-7.js";
 import sketch8 from "./sketches/sketch-8.js";
+import sketch9 from "./sketches/sketch-9.js";
