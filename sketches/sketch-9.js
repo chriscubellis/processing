@@ -176,3 +176,9 @@ let sketch9 = function (p) {
 };
 
 let myp5 = new p5(sketch9, "sketch9");
+
+window.addEventListener("resize", function () {
+  w = container.clientWidth;
+  h = container.clientHeight;
+  myp5.resizeCanvas(w, h);
+});

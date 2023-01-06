@@ -74,4 +74,10 @@ let sketch2 = function (p) {
 
 let myp5 = new p5(sketch2, "sketch2");
 
+window.addEventListener("resize", function () {
+  w = container.clientWidth;
+  h = container.clientHeight;
+  myp5.resizeCanvas(w, h);
+});
+
 export default sketch2;

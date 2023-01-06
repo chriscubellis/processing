@@ -7,11 +7,11 @@ const container = document.getElementById("sketch8");
 var w = container.clientWidth;
 var h = container.clientHeight;
 
-const CELLS_X = 50;
-const CELLS_Y = 50;
+var CELLS_X = 50;
+var CELLS_Y = 50;
 
-const CELL_SIZE_X = container.clientWidth / CELLS_X;
-const CELL_SIZE_Y = container.clientHeight / CELLS_Y;
+var CELL_SIZE_X = container.clientWidth / CELLS_X;
+var CELL_SIZE_Y = container.clientHeight / CELLS_Y;
 
 let grid = [];
 let stack = [];
@@ -158,3 +158,12 @@ let sketch8 = function (p) {
 };
 
 let myp5 = new p5(sketch8, "sketch8");
+
+window.addEventListener("resize", function () {
+  w = container.clientWidth;
+  h = container.clientHeight;
+  myp5.resizeCanvas(w, h);
+  CELL_SIZE_X = container.clientWidth / CELLS_X;
+  CELL_SIZE_Y = container.clientHeight / CELLS_Y;
+  myp5.clear();
+});
