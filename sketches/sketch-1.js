@@ -40,6 +40,7 @@ let sketch1 = function (p) {
     for (let circle of circles) {
       circle.applyForce(0, GRAVITY);
       circle.update();
+
       circle.display();
     }
   };

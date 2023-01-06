@@ -12,6 +12,17 @@ let counter = 0; // add counter variable
 
 let initialCircles = []; // array to store initial circles
 
+async function animateCircles() {
+  for (let circle of initialCircles) {
+    circle.y += circle.speed;
+    if (circle.y > h) {
+      initialCircles.splice(initialCircles.indexOf(circle), 1);
+    }
+  }
+}
+
+setInterval(animateCircles, 50);
+
 let sketch4 = function (p) {
   p.setup = function () {
     p.createCanvas(w, h);
@@ -44,7 +55,12 @@ let sketch4 = function (p) {
     } else {
       p.fill(p.color(primary));
     }
-    p.ellipse(x, y, 50, 50);
+    let circle = p.ellipse(x, y, 50, 50);
+    initialCircles.push(circle);
+
+    setTimeout(function () {
+      initialCircles.splice(initialCircles.indexOf(circle), 1);
+    }, 1000);
 
     counter++; // increment counter
   };
