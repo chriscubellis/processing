@@ -1,160 +1,252 @@
 // sketch-8.js
 
+// source modified from tutorial https://editor.p5js.org/JAlexCarney/sketches/3RJg3RLMD
+// https://www.youtube.com/watch?v=jQFYh3nRfSQ
+
 import p5 from "p5";
 import { primary } from "../index.js";
+
+let maze = null;
+let res = 25;
+let backgroundColor = "#000000";
+let strokeColor = "#ffffff";
+let playerColor = "#ffffff";
+let secretColor = "#000000";
 
 const container = document.getElementById("sketch8");
 var w = container.clientWidth;
 var h = container.clientHeight;
 
-var CELLS_X = 50;
-var CELLS_Y = 50;
+let resetTimeoutId = null;
+let endX, endY;
+let secretX = { x: 0, y: 0 };
 
-var CELL_SIZE_X = container.clientWidth / CELLS_X;
-var CELL_SIZE_Y = container.clientHeight / CELLS_Y;
-
-let grid = [];
-let stack = [];
-let currentCell;
+let foundX = false;
 
 let sketch8 = function (p) {
-  class Cell {
-    constructor(x, y) {
-      this.x = x;
-      this.y = y;
-      this.visited = false;
-      this.walls = {
-        top: true,
-        right: true,
-        bottom: true,
-        left: true,
-      };
-    }
-
-    // Draw the cell
-    draw() {
-      let x = this.x * CELL_SIZE_X;
-      let y = this.y * CELL_SIZE_Y;
-      p.noFill();
-      p.stroke(primary);
-      if (this.walls.top) {
-        p.line(x, y, x + CELL_SIZE_X, y);
-      }
-      if (this.walls.right) {
-        p.line(x + CELL_SIZE_X, y, x + CELL_SIZE_X, y + CELL_SIZE_Y);
-      }
-      if (this.walls.bottom) {
-        p.line(x + CELL_SIZE_X, y + CELL_SIZE_Y, x, y + CELL_SIZE_Y);
-      }
-      if (this.walls.left) {
-        p.line(x, y + CELL_SIZE_Y, x, y);
-      }
-      if (this.visited) {
-        p.fill(primary);
-        p.rect(x, y, CELL_SIZE_X, CELL_SIZE_Y);
-      }
-    }
-
-    // Get a random unvisited neighbor of the cell
-    getRandomUnvisitedNeighbor() {
-      let neighbors = [];
-      let x = this.x;
-      let y = this.y;
-      if (x > 0 && !grid[index(x - 1, y)].visited)
-        neighbors.push(grid[index(x - 1, y)]);
-      if (x < CELLS_Y - 1 && !grid[index(x + 1, y)].visited)
-        neighbors.push(grid[index(x + 1, y)]);
-      if (y > 0 && !grid[index(x, y - 1)].visited)
-        neighbors.push(grid[index(x, y - 1)]);
-      if (y < CELLS_X - 1 && !grid[index(x, y + 1)].visited)
-        neighbors.push(grid[index(x, y + 1)]);
-      if (neighbors.length > 0) {
-        return p.random(neighbors);
-      } else {
-        return undefined;
-      }
-    }
-  }
-
   p.setup = function () {
-    p.createCanvas(CELLS_X * CELL_SIZE_X, CELLS_Y * CELL_SIZE_Y);
-    p.frameRate(30);
-    p.background(0, 0);
+    p.createCanvas(w, h);
+    clearTimeout(resetTimeoutId);
+    p.makeMaze(w / res + 2, h / res + 2);
 
-    // Create the grid
-    for (let y = 0; y < CELLS_X; y++) {
-      for (let x = 0; x < CELLS_Y; x++) {
-        grid.push(new Cell(x, y));
-      }
-    }
+    endX = Math.floor(Math.random() * (w / res)) * res;
+    endY = Math.floor(Math.random() * (h / res)) * res;
+    secretX.x = endX;
+    secretX.y = endY;
 
-    // Select a random starting cell and mark it as visited
-    currentCell = grid[p.floor(p.random(0, CELLS_X * CELLS_Y))];
-    currentCell.visited = true;
-    stack.push(currentCell);
+    console.log(secretX);
 
-    // Start the generation loop
-    p.draw();
+    p.drawMaze();
+    p.frameRate(60);
+  };
+
+  let count = 0;
+
+  let errorOccurred = false;
+  let errorTime = -1;
+
+  p.showError = function (message) {
+    background(0);
+    textSize(64);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    text(message, width / 2, height / 2);
+    setTimeout(() => {
+      makeMaze(width / res + 2, height / res + 2);
+      drawMaze();
+    }, 5000);
   };
 
   p.draw = function () {
-    let nextCell = currentCell.getRandomUnvisitedNeighbor();
+    if (errorOccurred && errorTime + 5000 < millis()) {
+      errorOccurred = false;
+      makeMaze(width / res + 2, height / res + 2);
+      drawMaze();
+    } else if (count % 30 == 0) {
+      if (maze.stack.length != 0) {
+        p.background(0, 0);
+        p.mazeIterate();
+        p.drawMaze();
+        p.fill(secretColor);
+        //p.rect(endX, endY, res, res);
+      }
+    }
+    count++;
+  };
 
-    // If there is a neighbor, remove the wall between them and mark the neighbor as visited
-    if (nextCell) {
-      stack.push(nextCell);
-      removeWalls(currentCell, nextCell);
-      nextCell.visited = true;
-      currentCell = nextCell;
-    } else if (stack.length > 0) {
-      // If there are no neighbors, backtrack by popping the most recent cell from the stack
-      currentCell = stack.pop();
-    } else {
-      // If the stack is empty, the maze is complete
-      console.log("Maze complete!");
+  p.makeMaze = function (w, h) {
+    maze = {
+      stack: [],
+      tiles: [],
+      w: w,
+      h: h,
+    };
 
-      // Show the button
-      button.style.display = "block";
+    for (let i = 0; i < w; i++) {
+      maze.tiles[i] = [];
+      for (let j = 0; j < h; j++) {
+        maze.tiles[i][j] = {
+          up: "wall",
+          down: "wall",
+          left: "wall",
+          right: "wall",
+          isStart: false,
+          isCurrent: false,
+          x: i,
+          y: j,
+          seen: false,
+        };
+        if (i == 0 || i == w - 1 || j == 0 || j == h - 1) {
+          maze.tiles[i][j].seen = true;
+        }
+        maze.tiles[i][j].visitedAt = -1;
+      }
     }
 
-    // Draw the cells
-    for (let cell of grid) {
-      cell.draw();
+    maze.tiles[1][1].isCurrent = true;
+    maze.tiles[1][1].isStart = true;
+    maze.tiles[1][1].seen = true;
+    maze.stack.push(maze.tiles[1][1]);
+  };
+
+  p.mazeIterate = function () {
+    let current = maze.stack.pop();
+    let tileAndWall = p.pickNeighbor(current);
+
+    if (tileAndWall) {
+      maze.stack.push(current);
+      tileAndWall.tile[tileAndWall.wall] = "open";
+      current[p.opositeWall(tileAndWall.wall)] = "open";
+      tileAndWall.tile.seen = true;
+      maze.stack.push(tileAndWall.tile);
+
+      current.isCurrent = false;
+      tileAndWall.tile.isCurrent = true;
+    } else if (maze.stack.length != 0) {
+      current.isCurrent = false;
+      maze.stack[maze.stack.length - 1].isCurrent = true;
+    } else {
+      let unseenUnvisited = false;
+      for (let i = 0; i < maze.w; i++) {
+        for (let j = 0; j < maze.h; j++) {
+          if (!maze.tiles[i][j].seen) {
+            unseenUnvisited = true;
+            break;
+          }
+        }
+        if (unseenUnvisited) {
+          break;
+        }
+      }
+      if (!unseenUnvisited) {
+        showError("The maze has reached a dead end");
+      }
     }
   };
 
-  function removeWalls(a, b) {
-    let x = a.x - b.x;
-    if (x === 1) {
-      a.walls.left = false;
-      b.walls.right = false;
-    } else if (x === -1) {
-      a.walls.right = false;
-      b.walls.left = false;
+  p.pickNeighbor = function (tile) {
+    let unSeen = [];
+
+    let upTile = maze.tiles[tile.x][tile.y + 1];
+    if (!upTile.seen) {
+      unSeen.push({
+        tile: upTile,
+        wall: "up",
+      });
     }
-    let y = a.y - b.y;
-    if (y === 1) {
-      a.walls.top = false;
-      b.walls.bottom = false;
-    } else if (y === -1) {
-      a.walls.bottom = false;
-      b.walls.top = false;
+    let downTile = maze.tiles[tile.x][tile.y - 1];
+    if (!downTile.seen) {
+      unSeen.push({
+        tile: downTile,
+        wall: "down",
+      });
+    }
+    let rightTile = maze.tiles[tile.x + 1][tile.y];
+    if (!rightTile.seen) {
+      unSeen.push({
+        tile: rightTile,
+        wall: "right",
+      });
+    }
+    let leftTile = maze.tiles[tile.x - 1][tile.y];
+    if (!leftTile.seen) {
+      unSeen.push({
+        tile: leftTile,
+        wall: "left",
+      });
+    }
+
+    if (unSeen.length == 0) {
+      return null;
+    }
+
+    return unSeen[Math.floor(Math.random() * unSeen.length)];
+  };
+
+  p.opositeWall = function (wall) {
+    if (wall == "up") {
+      return "down";
+    } else if (wall == "down") {
+      return "up";
+    } else if (wall == "right") {
+      return "left";
+    } else if (wall == "left") {
+      return "right";
+    }
+
+    return -1;
+  };
+
+  p.drawMaze = function () {
+    p.push();
+    p.translate(-res, -res);
+    for (let i = 0; i < maze.tiles.length; i++) {
+      for (let j = 0; j < maze.tiles[i].length; j++) {
+        let tile = maze.tiles[i][j];
+
+        if (tile.x == secretX.x && tile.y == secretX.y) {
+          invert();
+        }
+
+        if (tile.x == secretX.x && tile.y == secretX.y) {
+          invert();
+        }
+
+        drawTile(tile, i, j);
+      }
+    }
+    p.pop();
+  };
+
+  function drawTile(tile, i, j) {
+    p.strokeWeight(0);
+
+    if (tile.seen == true) {
+      p.fill(0);
+      p.square(i * res, j * res, res);
+
+      p.strokeWeight(2);
+      p.stroke(primary);
+      if (tile.up == "wall") {
+        p.line(i * res, j * res, (i + 1) * res, j * res);
+      }
+      if (tile.down == "wall") {
+        p.line(i * res, (j + 1) * res, (i + 1) * res, (j + 1) * res);
+      }
+      if (tile.left == "wall") {
+        p.line((i + 1) * res, j * res, (i + 1) * res, (j + 1) * res);
+      }
+      if (tile.right == "wall") {
+        p.line(i * res, j * res, i * res, (j + 1) * res);
+      }
+    }
+
+    if (tile.isCurrent) {
+      p.fill(primary);
+      p.noStroke();
+      p.square(i * res, j * res, res);
     }
   }
-
-  function index(x, y) {
-    return x + y * CELLS_X;
-  }
-
-  // Create a button element and append it to the container element
-  let button = document.createElement("button");
-  button.innerHTML = "Try again";
-  //container.appendChild(button);
-
-  // When the button is clicked, reset the sketch by calling setup()
-  button.addEventListener("click", function () {
-    p.setup();
-  });
 };
 
 let myp5 = new p5(sketch8, "sketch8");
@@ -163,7 +255,5 @@ window.addEventListener("resize", function () {
   w = container.clientWidth;
   h = container.clientHeight;
   myp5.resizeCanvas(w, h);
-  CELL_SIZE_X = container.clientWidth / CELLS_X;
-  CELL_SIZE_Y = container.clientHeight / CELLS_Y;
   myp5.clear();
 });

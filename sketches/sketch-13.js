@@ -16,7 +16,7 @@ let sketch13 = function (p) {
   p.setup = function () {
     p.createCanvas(w, h, p.WEBGL);
     p.stroke(primary);
-    p.strokeWeight(1);
+    p.strokeWeight(2);
     p.background(0, 0);
     p.setAttributes("alpha", true);
 
